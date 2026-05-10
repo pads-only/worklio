@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class TeamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
-        return view('team.index');
+        Gate::authorize('viewAny', Team::class);
+
+        $teams = Auth::user()->teams()->with('users')->latest()->get();
+
+        return view('team.index', compact('teams'));
     }
 
     /**
@@ -30,23 +38,29 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
-        // Gate::authorize('create', Team::class);
+        Gate::authorize('create', Team::class);
 
         $team = Team::create([
             'name' => $request->name,
+            'description' => $request->description,
+            'owner_id' => Auth::id(),
+            'slug' => str()->slug($request->name) . '-' . str()->random(5),
         ]);
 
         $team->users()->attach($request->user()->id, ['role' => 'owner']);
 
-        return redirect()->route('my-teams');
+        return redirect()->route('team', strtolower($request->user()->username));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Team $team)
+    public function show(string $username, Team $team)
     {
-        //
+        // dd($username);
+        Gate::authorize('view', $team);
+
+        return view('team.show', compact('team'));
     }
 
     /**
@@ -60,16 +74,32 @@ class TeamController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTeamRequest $request, Team $team)
+    public function update(UpdateTeamRequest $request, string $username, Team $team)
     {
-        //
+        Gate::authorize('update', $team);
+
+        $team->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'slug' => str()->slug($request->name) . '-' . str()->random(5),
+        ]);
+
+        return redirect()->route('team.show', [strtolower($username), $team->slug]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Team $team)
+    public function destroy(Request $request, string $username, Team $team): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $team);
+
+        $request->validateWithBag('deleteTeam', [
+            'name' => ['required', 'string', 'in:' . $team->name],
+        ]);
+
+        $team->delete();
+
+        return redirect()->route('team', strtolower($username));
     }
 }

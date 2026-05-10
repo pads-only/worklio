@@ -4,15 +4,17 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateTeamRequest extends FormRequest
 {
+    protected $errorBag = 'updateTeam';
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check() && $this->route('team')->owner_id === Auth::id();
     }
 
     /**
@@ -23,7 +25,8 @@ class UpdateTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'description' => ['nullable', 'string', 'max:500'],
         ];
     }
 }

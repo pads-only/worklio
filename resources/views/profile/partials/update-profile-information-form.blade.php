@@ -17,7 +17,7 @@
         @csrf
         @method('patch')
 
-        <div class="w-full grid grid-cols-2 md:grid-cols-2 gap-6 border border-border-gray-200 p-6 rounded-lg">
+        <div class="w-full grid grid-cols-2 md:grid-cols-2 gap-6 p-6 rounded-lg">
             <div class="col-span-2 md:col-span-1">
                 <div class="mb-4">
                     <x-input-label for="first_name" :value="__('First Name')" />
