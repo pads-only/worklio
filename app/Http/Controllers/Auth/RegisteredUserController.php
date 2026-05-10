@@ -42,13 +42,13 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'username' => $request->first_name,
+            'username' => str_replace(' ', '', strtolower($request->first_name)),
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('my-teams', absolute: false));
+        return redirect(route('my-teams', parameters: ['username' => $user->username], absolute: false));
     }
 }

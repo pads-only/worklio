@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-modal name="create-team" :show="$errors->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('my-teams.store') }}" class="p-6">
+        <form method="post" action="{{ route('my-teams.store', Auth::user()->username) }}" class="p-6">
             @csrf
             <h2 class="text-lg font-medium text-gray-900">
                 Create a New Team
