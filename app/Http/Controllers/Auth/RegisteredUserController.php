@@ -49,6 +49,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('my-teams', parameters: ['username' => $user->username], absolute: false));
+        return redirect(route('team', parameters: ['username' => $user->username], absolute: false));
     }
 }

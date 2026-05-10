@@ -1,22 +1,30 @@
 <x-app-layout>
     <x-modal name="create-team" :show="$errors->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('my-teams.store', Auth::user()->username) }}" class="p-6">
+        <form method="post" action="{{ route('team.store', Auth::user()->username) }}" class="p-6">
             @csrf
             <h2 class="text-lg font-medium text-gray-900">
                 Create a New Team
             </h2>
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                <x-input-label for="name" value="{{ __('Name') }}" />
 
                 <x-text-input
                     id="name"
                     name="name"
                     type="text"
+                    :value="old('name')"
                     class="mt-1 block w-full"
                     placeholder="{{ __('Give your team a name') }}"
                 />
 
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+            <div class="mt-6">
+                <x-input-label for="description" value="{{ __('Description') }}" class="" />
+
+                <x-text-input id="description" name="description" type="text" :value="old('description')" class="mt-1 block w-full" placeholder="{{ __('Describe your team') }}" />
+
+                <x-input-error :messages="$errors->get('description')" class="mt-2" />
             </div>
 
             <div class="mt-6 flex justify-end">
@@ -45,44 +53,30 @@
             </div>
             </header>
 
-            <section class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <div class="rounded-xl border border-gray-200 p-5 shadow-sm bg-white">
-                <p class="text-sm text-gray-700">Teams Joined</p>
-                <p class="mt-2 text-2xl font-semibold text-gray-900">4</p>
-            </div>
-            <div class="rounded-xl border border-gray-200 p-5 shadow-sm bg-white">
-                <p class="text-sm text-gray-700">Active Projects</p>
-                <p class="mt-2 text-2xl font-semibold text-gray-900">9</p>
-            </div>
-            <div class="rounded-xl border border-gray-200 p-5 shadow-sm bg-white">
-                <p class="text-sm text-gray-700">Pending Invites</p>
-                <p class="mt-2 text-2xl font-semibold text-gray-900">2</p>
-            </div>
-            <div class="rounded-xl border border-gray-200 p-5 shadow-sm bg-white">
-                <p class="text-sm text-gray-700">Completed Tasks</p>
-                <p class="mt-2 text-2xl font-semibold text-gray-900">38</p>
-            </div>
-            </section>
-
             <section class="rounded-xl border border-gray-200 shadow-sm bg-white">
-            <div class="border-b border-gray-200 px-5 py-4 sm:px-6">
-                <h2 class="text-lg font-medium text-gray-900">Your Teams</h2>
-            </div>
+                <div class="border-b border-gray-200 px-5 py-4 sm:px-6">
+                    <h2 class="text-lg font-medium text-gray-900">Your Teams</h2>
+                </div>
 
-            <div class="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3 sm:p-6">
-                <div class="rounded-xl border border-gray-200 bg-white p-5 transition hover:border-indigo-500">
-                <div class="flex items-start justify-between gap-4">
-                    <div>
-                    <h3 class="font-semibold text-gray-900">Product Team</h3>
-                    <p class="mt-1 text-sm text-gray-800">Main product planning and roadmap execution.</p>
-                    </div>
-                    <span class="rounded-full border border-indigo-200 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-300">Owner</span>
-                </div>
-                <div class="my-5 flex items-center justify-between text-sm text-gray-500">
-                    <span>8 members</span>
-                    <span>3 active projects</span>
-                </div>
-                <a href="{{ route('register') }}" class="rounded-md border border-indigo-500 bg-transparent px-3.5 py-2.5 text-sm font-semibold text-indigo-500 shadow-xs hover:bg-indigo-500 hover:text-white focus-visible:outline-2 transition-all ease-in-out focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Open Team</a>
+                <div class="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3 sm:p-6">
+                    @forelse ($teams as $team)    
+                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-5 transition hover:border-gray-300 hover:bg-white ease-in-out">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">{{ $team->name }}</h3>
+                                    <p class="mt-1 text-sm text-gray-800">{{ $team->description ?? 'No description provided.' }}</p>
+                                </div>
+                                <span class="rounded-full border border-indigo-200 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-300">Owner</span>
+                            </div>
+                            <div class="my-5 flex items-center justify-between text-sm text-gray-500">
+                                <span>8 members</span>
+                                <span>3 active projects</span>
+                            </div>
+                            <a href="{{ route('team.show', [strtolower(Auth::user()->username), $team->slug]) }}" class="rounded-md border border-indigo-500 bg-transparent px-3.5 py-2.5 text-sm font-semibold text-indigo-500 shadow-xs hover:bg-indigo-500 hover:text-white focus-visible:outline-2 transition-all ease-in-out focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Open Team</a>
+                        </div>
+                    @empty
+                        <p class="text-gray-500">You are not a member of any teams.</p>
+                    @endforelse
                 </div>
             </section>
         </div>
