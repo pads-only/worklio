@@ -1,5 +1,36 @@
 <x-app-layout>
-    <div class="min-h-screen bg-gray-100 text-gray-800">
+    <x-modal name="create-team" :show="$errors->isNotEmpty()" focusable>
+        <form method="post" action="{{ route('my-teams.store') }}" class="p-6">
+            @csrf
+            <h2 class="text-lg font-medium text-gray-900">
+                Create a New Team
+            </h2>
+            <div class="mt-6">
+                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+
+                <x-text-input
+                    id="name"
+                    name="name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    placeholder="{{ __('Give your team a name') }}"
+                />
+
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button class="ms-3">
+                    {{ __('Create Team') }}
+                </x-primary-button>
+            </div>
+        </form>
+    </x-modal>
+    <div class=" bg-gray-100 text-gray-800">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <header class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -10,7 +41,7 @@
             </div>
 
             <div class="flex w-full flex-col gap-3 sm:flex-row md:w-auto">
-                <a href="{{ route('register') }}" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Create Team</a>
+                <x-primary-button x-data="" x-on:click="$dispatch('open-modal', 'create-team')">Create Team</x-primary-button>
             </div>
             </header>
 
