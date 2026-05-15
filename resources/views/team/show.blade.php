@@ -215,7 +215,7 @@
                     <div class="flex flex-wrap gap-2">
                         <button x-data="" x-on:click="$dispatch('open-modal', 'edit-team')" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600">Edit Team</button>
                         <a href="{{ route('team.invite.create', [Auth::user()->username, $team->slug]) }}" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600">Invite Members</a>
-                        <button class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500">New Project</button>
+                        <a href="{{ route('project.create', [Auth::user()->username, $team->slug]) }}">New Project</a>
                     </div>
                     @endcan
                 </div>

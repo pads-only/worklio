@@ -57,8 +57,11 @@ class TeamController extends Controller
      */
     public function show(string $username, Team $team)
     {
-        // dd($username);
         Gate::authorize('view', $team);
+
+        if (! $team) {
+            redirect()->route('team', strtolower($username));
+        }
 
         return view('team.show', compact('team'));
     }
