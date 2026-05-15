@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -36,7 +37,7 @@ class User extends Authenticatable
      */
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'team_user');
+        return $this->belongsToMany(Team::class, 'team_user')->withPivot('role');
     }
 
     /**
@@ -45,5 +46,13 @@ class User extends Authenticatable
     public function ownedTeams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, 'team_user')->wherePivot('is_owner', true);
+    }
+
+    /**
+     * Get the invitations that the user has received.
+     */
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'email', 'email');
     }
 }
