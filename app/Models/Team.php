@@ -35,4 +35,9 @@ class Team extends Model
             ->withPivot('role')
             ->withTimestamps();
     }
+
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
 }
