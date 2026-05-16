@@ -49,21 +49,22 @@ class TeamController extends Controller
 
         $team->users()->attach($request->user()->id, ['role' => 'owner']);
 
-        return redirect()->route('team', strtolower($request->user()->username));
+        return redirect()->route('team');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $username, Team $team)
+    public function show(Team $team)
     {
         Gate::authorize('view', $team);
 
-        if (! $team) {
-            redirect()->route('team', strtolower($username));
-        }
+        // if (! $team) {
+        //     redirect()->route('team', strtolower($username));
+        // }
+        $projects = $team->projects()->latest()->get();
 
-        return view('team.show', compact('team'));
+        return view('team.show', compact('team', 'projects'));
     }
 
     /**
@@ -77,7 +78,7 @@ class TeamController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTeamRequest $request, string $username, Team $team)
+    public function update(UpdateTeamRequest $request, Team $team)
     {
         Gate::authorize('update', $team);
 
@@ -87,13 +88,13 @@ class TeamController extends Controller
             'slug' => str()->slug($request->name) . '-' . str()->random(5),
         ]);
 
-        return redirect()->route('team.show', [strtolower($username), $team->slug]);
+        return redirect()->route('team.show', $team->slug);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, string $username, Team $team): RedirectResponse
+    public function destroy(Request $request, Team $team): RedirectResponse
     {
         Gate::authorize('delete', $team);
 
@@ -103,6 +104,6 @@ class TeamController extends Controller
 
         $team->delete();
 
-        return redirect()->route('team', strtolower($username));
+        return redirect()->route('team');
     }
 }

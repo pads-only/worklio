@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-modal name="create-team" :show="$errors->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('team.store', Auth::user()->username) }}" class="p-6">
+        <form method="post" action="{{ route('team.store') }}" class="p-6">
             @csrf
             <h2 class="text-lg font-medium text-gray-900">
                 Create a New Team
@@ -49,7 +49,7 @@
             </div>
 
             <div class="flex w-full flex-col gap-3 sm:flex-row md:w-auto">
-                <a href="{{ route('team.invite.index', Auth::user()->username) }}" class="text-indigo-600 hover:text-indigo-900">
+                <a href="{{ route('team.invite.index') }}" class="text-indigo-600 hover:text-indigo-900">
                 Invitations
             </a>
                 <x-primary-button x-data="" x-on:click="$dispatch('open-modal', 'create-team')">Create Team</x-primary-button>
@@ -77,7 +77,7 @@
                                 <span>{{ $team->users->count() }} member(s)</span>
                                 <span>3 active projects</span>
                             </div>
-                            <a href="{{ route('team.show', [strtolower(Auth::user()->username), $team->slug]) }}" class="rounded-md border border-indigo-500 bg-transparent px-3.5 py-2.5 text-sm font-semibold text-indigo-500 shadow-xs hover:bg-indigo-500 hover:text-white focus-visible:outline-2 transition-all ease-in-out focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Open Team</a>
+                            <a href="{{ route('team.show', $team->slug) }}" class="rounded-md border border-indigo-500 bg-transparent px-3.5 py-2.5 text-sm font-semibold text-indigo-500 shadow-xs hover:bg-indigo-500 hover:text-white focus-visible:outline-2 transition-all ease-in-out focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Open Team</a>
                         </div>
                     @empty
                         <p class="text-gray-500">You are not a member of any teams.</p>

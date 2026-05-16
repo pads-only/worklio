@@ -27,18 +27,18 @@ class InvitationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(string $username, Team $team)
+    public function create(Team $team)
     {
         if (!Auth::check() || $team->owner_id !== Auth::id()) {
             abort(403);
         }
-        return view('invitation.create', compact('team', 'username'));
+        return view('invitation.create', compact('team'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInvitationRequest $request, string $username, Team $team)
+    public function store(StoreInvitationRequest $request, Team $team)
     {
         if (!Auth::check() || $team->owner_id !== Auth::id()) {
             abort(403);
@@ -46,7 +46,7 @@ class InvitationController extends Controller
 
 
         if ($team->users()->where('email', $request->email)->exists() || Invitation::where('email', $request->email)->where('team_id', $team->id)->exists()) {
-            return redirect()->route('team.invite.create', [$username, $team->slug])->withErrors(['email' => 'This email is already a member or has already been invited.']);
+            return redirect()->route('team.invite.create', $team->slug)->withErrors(['email' => 'This email is already a member or has already been invited.']);
         }
 
         Invitation::create([
@@ -57,7 +57,7 @@ class InvitationController extends Controller
             'expires_at' => now()->addDays(2),
         ]);
 
-        return redirect()->route('team.show', [$username, $team->slug]);
+        return redirect()->route('team.show', $team->slug);
     }
 
     /**
@@ -71,7 +71,7 @@ class InvitationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function accept(string $username, Team $team, Invitation $invitation)
+    public function accept(Team $team, Invitation $invitation)
     {
         // dd("working");
         if (!Auth::check() || $invitation->email !== Auth::user()->email || $team->id !== $invitation->team_id) {
@@ -82,7 +82,7 @@ class InvitationController extends Controller
 
         $invitation->delete();
 
-        return redirect()->route('team.show', [$username, $team->slug]);
+        return redirect()->route('team.show', $team->slug);
     }
 
     /**

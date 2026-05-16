@@ -114,7 +114,7 @@
         </div>
     </div> --}}
     <x-modal name="edit-team" :show="$errors->updateTeam->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('team.update', [Auth::user()->username, $team->slug]) }}" class="p-6">
+        <form method="post" action="{{ route('team.update', $team->slug) }}" class="p-6">
             @csrf
             @method('patch')
             <h2 class="text-lg font-medium text-gray-900">
@@ -155,7 +155,7 @@
     </x-modal>
 
     <x-modal name="confirm-delete-team" :show="$errors->deleteTeam->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('team.destroy', [Auth::user()->username, $team->slug]) }}" class="p-6">
+        <form method="post" action="{{ route('team.destroy', $team->slug) }}" class="p-6">
             @csrf
             @method('delete')
             <h2 class="text-lg font-medium text-gray-900">
@@ -213,9 +213,9 @@
                     </div>
                     @can('update', $team)
                     <div class="flex flex-wrap gap-2">
-                        <button x-data="" x-on:click="$dispatch('open-modal', 'edit-team')" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600">Edit Team</button>
-                        <a href="{{ route('team.invite.create', [Auth::user()->username, $team->slug]) }}" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600">Invite Members</a>
-                        <a href="{{ route('project.create', [Auth::user()->username, $team->slug]) }}">New Project</a>
+                        <x-secondary-button x-data="" x-on:click="$dispatch('open-modal', 'edit-team')" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600">Edit Team</x-secondary-button>
+                        <a href="{{ route('team.invite.create', $team->slug) }}" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600">Invite Members</a>
+                        <a href="{{ route('project.create', $team->slug) }}" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600">New Project</a>
                     </div>
                     @endcan
                 </div>
@@ -239,65 +239,29 @@
                 </section>
 
                 <section>
-                <div class="border-b border-gray-200 py-5">
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                        <h3 class="font-medium">Worklio Dashboard Redesign</h3>
-                        <p class="mt-1 text-sm text-gray-600">Refreshing the authenticated workspace and navigation flow.</p>
-                    </div>
-                    <span class="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs text-indigo-700">In Progress</span>
-                    </div>
-                    <div class="mt-3 flex flex-wrap gap-4 text-sm text-gray-500">
-                    <span>14 tasks</span>
-                    <span>6 completed</span>
-                    <span>Due May 18</span>
-                    </div>
-                    <div class="mt-4">
-                    <div class="h-2 overflow-hidden rounded-lg bg-gray-100">
-                        <div class="h-full w-2/5 rounded-lg bg-indigo-600"></div>
-                    </div>
-                    </div>
-                </div>
-
-                <div class="border-b border-gray-200 py-5">
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                        <h3 class="font-medium">Task Assignment Flow</h3>
-                        <p class="mt-1 text-sm text-gray-600">Improving assignment clarity, ownership, and handoff between members.</p>
-                    </div>
-                    <span class="rounded-lg border border-gray-300 bg-gray-50 px-3 py-1 text-xs text-gray-700">Planning</span>
-                    </div>
-                    <div class="mt-3 flex flex-wrap gap-4 text-sm text-gray-500">
-                    <span>9 tasks</span>
-                    <span>2 completed</span>
-                    <span>Due May 24</span>
-                    </div>
-                    <div class="mt-4">
-                    <div class="h-2 overflow-hidden rounded-lg bg-gray-100">
-                        <div class="h-full w-1/5 rounded-lg bg-indigo-600"></div>
-                    </div>
-                    </div>
-                </div>
-
-                <div class="border-b border-gray-200 py-5">
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                        <h3 class="font-medium">Q2 Planning Board</h3>
-                        <p class="mt-1 text-sm text-gray-600">Roadmap priorities, milestones, and planning deliverables.</p>
-                    </div>
-                    <span class="rounded-lg border border-gray-300 bg-gray-50 px-3 py-1 text-xs text-gray-700">Review</span>
-                    </div>
-                    <div class="mt-3 flex flex-wrap gap-4 text-sm text-gray-500">
-                    <span>18 tasks</span>
-                    <span>12 completed</span>
-                    <span>Due May 30</span>
-                    </div>
-                    <div class="mt-4">
-                    <div class="h-2 overflow-hidden rounded-lg bg-gray-100">
-                        <div class="h-full w-3/5 rounded-lg bg-indigo-600"></div>
-                    </div>
-                    </div>
-                </div>
+                    @forelse ($projects as $project)
+                        <div class="border-b border-gray-200 py-5">
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                <div>
+                                    <a href="{{ route('project.show', [$team->slug, $project->slug]) }}" class="text-indigo-600 hover:text-indigo-900">{{ $project->name }}</a>
+                                    <p class="mt-1 text-sm text-gray-600">{{ $project->description }}.</p>
+                                </div>
+                                <span class="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs text-indigo-700">{{ $project->status }}</span>
+                            </div>
+                            <div class="mt-3 flex flex-wrap gap-4 text-sm text-gray-500">
+                                <span>14 tasks</span>
+                                <span>6 completed</span>
+                                <span>Due May 18</span>
+                            </div>
+                            <div class="mt-4">
+                                <div class="h-2 overflow-hidden rounded-lg bg-gray-100">
+                                    <div class="h-full w-2/5 rounded-lg bg-indigo-600"></div>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-gray-500">No projects found for this team.</p>
+                    @endforelse
                 </section>
             </main>
 

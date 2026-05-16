@@ -13,7 +13,7 @@
                             <p class="text-sm text-gray-500">Invited by {{ $invitation->team->owner->first_name }}</p>
                         </div>
                         <div class="flex gap-2">
-                            <form action="{{ route('team.invite.accept', [Auth::user()->username, $invitation->team->slug, $invitation->token]) }}" method="POST">
+                            <form action="{{ route('team.invite.accept', [$invitation->team->slug, $invitation->token]) }}" method="POST">
                                 @csrf
                                 <x-primary-button type="submit">Accept</x-primary-button>
                             </form>

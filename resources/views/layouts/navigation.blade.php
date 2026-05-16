@@ -5,14 +5,14 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('team', strtolower(Auth::user()->username)) }}">
+                    <a href="{{ route('team') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('team', strtolower(Auth::user()->username))" :active="request()->routeIs('team')">
+                    <x-nav-link :href="route('team')" :active="request()->routeIs('team')">
                         My Teams
                     </x-nav-link>
                 </div>
@@ -34,7 +34,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit', Auth::user()->username)">
+                        <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
@@ -67,7 +67,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('team', Auth::user()->username)" :active="request()->routeIs('team')">
+            <x-responsive-nav-link :href="route('team')" :active="request()->routeIs('team')">
                 {{ __('My Teams') }}
             </x-responsive-nav-link>
         </div>
@@ -80,7 +80,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit', strtolower(Auth::user()->username))">
+                <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
