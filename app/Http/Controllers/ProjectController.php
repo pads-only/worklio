@@ -6,7 +6,9 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Team;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -24,6 +26,8 @@ class ProjectController extends Controller
      */
     public function create(Team $team): View
     {
+        Gate::authorize('create', Project::class);
+
         return view('team.project.create', compact('team'));
     }
 
@@ -32,6 +36,7 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request, Team $team)
     {
+        Gate::authorize('create', Project::class);
 
         $project = Project::create([
             'team_id' => $team->id,
@@ -65,6 +70,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Team $team, Project $project)
     {
+        Gate::authorize('update', $project);
+
         $project->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -77,8 +84,16 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Request $request, Team $team, Project $project)
     {
-        //
+        Gate::authorize('delete', $project);
+
+        $request->validateWithBag('deleteProject', [
+            'name' => ['required', 'string', 'in:' . $project->name],
+        ]);
+
+        $project->delete();
+
+        return redirect()->route('team.show', $team->slug);
     }
 }

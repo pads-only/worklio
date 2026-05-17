@@ -1,1 +1,1 @@
-<span class="font-bold text-xl">Worklio.<span class="text-indigo-500">io</span></span>
+<span class="font-bold text-xl font-mono text-foreground">Worklio.<span class="text-primary-500">io</span></span>

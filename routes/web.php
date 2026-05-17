@@ -39,6 +39,7 @@ Route::middleware('auth')->prefix('app')->group(function () {
     Route::get('/teams/{team:slug}/projects/{project:slug}', [ProjectController::class, 'show'])->name('project.show');
     Route::post('/teams/{team:slug}/projects', [ProjectController::class, 'store'])->name('project.store');
     Route::patch('/teams/{team:slug}/projects/{project:slug}', [ProjectController::class, 'update'])->name('project.update');
+    Route::delete('/teams/{team:slug}/projects/{project:slug}', [ProjectController::class, 'destroy'])->name('project.destroy');
 });
 
 // Route::middleware('auth')->group(function () {

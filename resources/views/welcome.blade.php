@@ -17,18 +17,18 @@
             </style>
         @endif
     </head>
-    <body class="bg-gray-100">
-        <div class="">
+    <body class="antialiased font-sans">
+        <div class="bg-worklio-gradient min-h-screen">
             <header class="absolute inset-x-0 top-0 z-50">
                 <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
                     <div class="flex lg:flex-1">
-                        <a href="#" class="-m-1.5 p-1.5">
+                        <a href="/" class="-m-1.5 p-1.5">
                             <x-application-logo class="h-8 w-auto" />
                         </a>
                     </div>
                     @guest
                     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                        <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-gray-700">Log in <span aria-hidden="true">&rarr;</span></a>
+                        <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-primary-700">Log in <span aria-hidden="true">&rarr;</span></a>
                     </div>  
                     @endguest
                 </nav>
@@ -37,14 +37,15 @@
             <div class="relative isolate px-6 lg:px-8">
                 <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-42">
                 <div class="text-center">
-                    <h1 class="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">Move <span class="text-indigo-500">faster</span> with your <span class="text-indigo-500">team</span>.</h1>
-                    <p class="mt-8 text-lg font-medium text-pretty text-gray-600 sm:text-xl/8">Plan work, assign tasks, and keep every project moving forward.</p>
+                    <h1 class="text-5xl text-foreground/70 font-semibold text-balance sm:text-7xl tracking-tight ">Move <span class="text-primary-800">faster</span> with your <span class="text-primary-800">team</span>.</h1>
+                    <p class="mt-8 text-lg font-medium text-pretty text-muted-foreground sm:text-xl/8">Plan work, assign tasks, and keep every project moving forward.</p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
                         @auth
-                            <a href="{{ route('team') }}" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">My Teams</a>
+                            {{-- <a href="{{ route('team') }}" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">My Teams</a> --}}
+                            <x-link href="{{ route('team') }}">My Teams</x-link>
                         @endauth
                         @guest
-                        <a href="{{ route('register') }}" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Register</a>
+                        <a href="{{ route('register') }}" class="rounded-md bg-primary-gradient px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Register</a>
                         <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-gray-600 hover:text-gray-900">Login<span aria-hidden="true">→</span></a>
                         @endguest
                     </div>
