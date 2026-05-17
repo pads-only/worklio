@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('team', Auth::user()->username, absolute: false));
+        return redirect()->intended(route('team', absolute: false));
     }
 
     /**

@@ -12,8 +12,20 @@ class Project extends Model
 
     protected $fillable = [
         'name',
+        'slug',
+        'status',
         'description',
         'team_id',
         'owner_id',
     ];
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    // public function getStatusAttribute($value)
+    // {
+    //     return str()->upper($value);
+    // }
 }
