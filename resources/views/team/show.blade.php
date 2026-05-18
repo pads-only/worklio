@@ -1,105 +1,9 @@
 <x-app-layout>
     {{-- EDIT TEAM MODAL --}}
-    <x-modal name="edit-team" :show="$errors->updateTeam->isNotEmpty()" focusable>
-        <form method="POST" action="{{ route('team.update', $team->slug) }}" class="p-6">
-            @csrf
-            @method('PATCH')
-
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold text-foreground">
-                    Edit Team
-                </h2>
-
-                <p class="mt-1 text-sm text-muted-foreground">
-                    Update your workspace information.
-                </p>
-            </div>
-
-            <div class="space-y-5">
-                <div>
-                    <x-input-label for="name" value="Team Name" />
-
-                    <x-text-input
-                        id="name"
-                        name="name"
-                        type="text"
-                        :value="old('name', $team->name)"
-                        class="mt-2 block w-full border-border bg-background"
-                    />
-
-                    <x-input-error :messages="$errors->updateTeam->get('name')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="description" value="Description" />
-
-                    <x-text-input
-                        id="description"
-                        name="description"
-                        type="text"
-                        :value="old('description', $team->description)"
-                        class="mt-2 block w-full border-border bg-background"
-                    />
-
-                    <x-input-error :messages="$errors->updateTeam->get('description')" class="mt-2" />
-                </div>
-            </div>
-
-            <div class="mt-8 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    Cancel
-                </x-secondary-button>
-
-                <x-primary-button>
-                    Update Team
-                </x-primary-button>
-            </div>
-        </form>
-    </x-modal>
+    @include('team.partials.edit-modal')
 
     {{-- DELETE TEAM MODAL --}}
-    <x-modal name="confirm-delete-team" :show="$errors->deleteTeam->isNotEmpty()" focusable>
-        <form method="POST" action="{{ route('team.destroy', $team->slug) }}" class="p-6">
-            @csrf
-            @method('DELETE')
-
-            <div class="mb-5">
-                <h2 class="text-xl font-semibold ">
-                    Delete Team
-                </h2>
-
-                <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    This action cannot be undone. All projects, tasks, and workspace data associated with this team will be permanently deleted. Type <span class="text-foreground font-semibold">"{{$team->name}}"</span> to confirm deletion.
-                </p>
-            </div>
-
-            <div>
-                <x-input-label for="delete_name" value="Confirm Team Name" required />
-
-                <x-text-input
-                    id="delete_name"
-                    name="name"
-                    type="text"
-                    :value="old('name')"
-                    required
-                    class="mt-2 block w-full border-border bg-background"
-                    placeholder="Enter team name"
-                />
-
-                <x-input-error :messages="$errors->deleteTeam->get('name')" class="mt-2" />
-            </div>
-
-            <div class="mt-8 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    Cancel
-                </x-secondary-button>
-
-                <x-danger-button>
-                    Delete Team
-                </x-danger-button>
-            </div>
-        </form>
-    </x-modal>
+    @include('team.partials.delete-modal')
 
     {{-- LEAVE TEAM MODAL --}}
     <x-modal name="confirm-leave-team" :show="$errors->deleteTeam->isNotEmpty()" focusable>
@@ -223,6 +127,9 @@
                             >
                                 Edit Team
                             </x-secondary-button>
+                            <x-link href="{{ route('team.invite.index', $team->slug) }}">
+                                My Invites
+                            </x-link>
                         </div>
                     @endcan
                 </div>
@@ -549,9 +456,9 @@
                             </x-link>
 
                             <x-danger-button
-                                class="w-full bg-transparent text-destructive border border-destructive hover:text-muted"
-                                x-data=""
-                                x-on:click="$dispatch('open-modal', 'confirm-leave-team')"
+                                class="w-full bg-transparent text-red-500 border border-red-500 hover:text-muted"
+                                {{-- x-data="" --}}
+                                {{-- x-on:click="$dispatch('open-modal', 'confirm-leave-team')" --}}
                             >
                                 Leave Workspace
                                 <span>→</span>

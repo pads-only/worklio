@@ -1,130 +1,10 @@
 <x-app-layout>
 
     {{-- EDIT PROJECT MODAL --}}
-    <x-modal name="edit-project" :show="$errors->updateProject->isNotEmpty()" focusable>
-
-        <form method="POST" action="{{ route('project.update', [$team->slug, $project->slug]) }}" class="p-6">
-
-            @csrf
-            @method('PATCH')
-
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold text-foreground">
-                    Edit Project
-                </h2>
-
-                <p class="mt-1 text-sm text-muted-foreground">
-                    Update project details and status.
-                </p>
-            </div>
-
-            <div class="space-y-5">
-
-                <div>
-                    <x-input-label for="name" value="Project Name" required />
-
-                    <x-text-input
-                        id="name"
-                        name="name"
-                        type="text"
-                        :value="old('name', $project->name)"
-                        class="mt-2 block w-full border-border bg-background"
-                    />
-
-                    <x-input-error :messages="$errors->updateProject->get('name')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="description" value="Description" />
-
-                    <x-text-input
-                        id="description"
-                        name="description"
-                        type="text"
-                        :value="old('description', $project->description)"
-                        class="mt-2 block w-full border-border bg-background"
-                    />
-
-                    <x-input-error :messages="$errors->updateProject->get('description')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="status" value="Status" />
-
-                    <select
-                        id="status"
-                        name="status"
-                        class="mt-2 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
-                    >
-                        <option value="pending" @selected(old('status', $project->status) === 'pending')>Pending</option>
-                        <option value="in progress" @selected(old('status', $project->status) === 'in progress')>In Progress</option>
-                        <option value="completed" @selected(old('status', $project->status) === 'completed')>Completed</option>
-                    </select>
-
-                    <x-input-error :messages="$errors->updateProject->get('status')" class="mt-2" />
-                </div>
-
-            </div>
-
-            <div class="mt-8 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    Cancel
-                </x-secondary-button>
-
-                <x-primary-button>
-                    Update Project
-                </x-primary-button>
-            </div>
-
-        </form>
-    </x-modal>
+    @include('team.project.partials.edit-modal')
 
     {{-- DELETE PROJECT MODAL --}}
-    <x-modal name="confirm-delete-project" :show="$errors->deleteProject->isNotEmpty()" focusable>
-
-        <form method="POST" action="{{ route('project.destroy', [$team->slug, $project->slug]) }}" class="p-6">
-
-            @csrf
-            @method('DELETE')
-
-            <div class="mb-5">
-                <h2 class="text-xl font-semibold text-foreground">
-                    Delete Project
-                </h2>
-
-                <p class="mt-2 text-sm text-muted-foreground leading-relaxed">
-                    This action cannot be undone. All tasks and project data will be permanently removed.
-                </p>
-            </div>
-
-            <div>
-                <x-input-label for="name" value="Confirm Project Name" required />
-
-                <x-text-input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    class="mt-2 block w-full border-border bg-background"
-                    placeholder="Enter project name"
-                />
-
-                <x-input-error :messages="$errors->deleteProject->get('name')" class="mt-2" />
-            </div>
-
-            <div class="mt-8 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    Cancel
-                </x-secondary-button>
-
-                <x-danger-button>
-                    Delete Project
-                </x-danger-button>
-            </div>
-
-        </form>
-
-    </x-modal>
+    @include('team.project.partials.delete-modal')
 
     {{-- PAGE WRAPPER --}}
     <div class="min-h-screen bg-background">
@@ -174,7 +54,7 @@
                     @can('update', $project)
                     <div class="flex flex-col gap-3 sm:flex-row xl:flex-col">
 
-                        <x-primary-button x-on:click="$dispatch('open-modal', 'edit-project')">
+                        <x-primary-button x-data="" x-on:click="$dispatch('open-modal', 'edit-project')">
                             Edit Project
                         </x-primary-button>
 

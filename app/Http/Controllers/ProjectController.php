@@ -46,7 +46,7 @@ class ProjectController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('team.show', $team->slug);
+        return redirect()->route('team.show', $team->slug)->with('success', 'New project has been created!');
     }
 
     /**
@@ -78,7 +78,7 @@ class ProjectController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('project.show', [$team->slug, $project->slug]);
+        return redirect()->route('project.show', [$team->slug, $project->slug])->with('success', 'Project details has been updated!');
     }
 
     /**
@@ -94,6 +94,6 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->route('team.show', $team->slug);
+        return redirect()->route('team.show', $team->slug)->with('warning', 'Project has been deleted successfully!');
     }
 }
