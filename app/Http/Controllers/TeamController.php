@@ -49,7 +49,7 @@ class TeamController extends Controller
 
         $team->users()->attach($request->user()->id, ['role' => 'owner']);
 
-        return redirect()->route('team');
+        return redirect()->route('team')->with('success', 'New team has been created!');
     }
 
     /**
@@ -88,7 +88,7 @@ class TeamController extends Controller
             'slug' => str()->slug($request->name) . '-' . str()->random(5),
         ]);
 
-        return redirect()->route('team.show', $team->slug);
+        return redirect()->route('team.show', $team->slug)->with('success', 'Team details has been updated!');
     }
 
     /**
@@ -104,6 +104,6 @@ class TeamController extends Controller
 
         $team->delete();
 
-        return redirect()->route('team');
+        return redirect()->route('team')->with('warning', 'Team has been deleted succesfully!');
     }
 }

@@ -19,7 +19,7 @@ Route::middleware('auth')->prefix('app')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //invitations
-    Route::get('/invitations', [InvitationController::class, 'index'])->name('team.invite.index');
+    Route::get('/invitations', [InvitationController::class, 'invitation'])->name('team.invite.invitation');
 
     //teams
     Route::get('/teams', [TeamController::class, 'index'])->name('team');
@@ -30,9 +30,11 @@ Route::middleware('auth')->prefix('app')->group(function () {
 
 
     // invitation routes inside team routes
+    Route::get('teams/{team:slug}/my-invites', [InvitationController::class, 'index'])->name('team.invite.index');
     Route::get('/teams/{team:slug}/invite', [InvitationController::class, 'create'])->name('team.invite.create');
     Route::post('/teams/{team:slug}/invite', [InvitationController::class, 'store'])->name('team.invite.store');
     Route::post('/teams/{team:slug}/{invitation:token}/accept', [InvitationController::class, 'accept'])->name('team.invite.accept');
+    Route::delete('/teams/{team:slug}/invite', [InvitationController::class, 'destroy'])->name('team.invite.destroy');
 
     //project routes inside team routes
     Route::get('/teams/{team:slug}/projects/create', [ProjectController::class, 'create'])->name('project.create');

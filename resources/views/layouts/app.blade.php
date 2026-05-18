@@ -19,6 +19,7 @@
             @include('layouts.navigation')
             <!-- Page Content -->
             <main>
+                <x-toast-container/>
                 {{ $slot }}
             </main>
         </div>

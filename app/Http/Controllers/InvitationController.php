@@ -13,15 +13,28 @@ class InvitationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Team $team)
+    {
+        if (!Auth::check()) {
+            abort(403);
+        }
+        // all invitation sent by the current user.
+        $invitations = Invitation::where('user_id', Auth::id())->get();
+
+        // $team = Team::where('owner_id', Auth::id())->get();
+
+        return view('invitation.index', compact('invitations', 'team'));
+    }
+
+    public function invitation()
     {
         if (!Auth::check()) {
             abort(403);
         }
 
-        $invitations = Auth::user()->invitations()->with('team')->get();
+        $invitations = Auth::user()->invitations()->get();
 
-        return view('invitation.index', compact('invitations'));
+        return view('invitation.invitation', compact('invitations'));
     }
 
     /**
@@ -51,13 +64,14 @@ class InvitationController extends Controller
 
         Invitation::create([
             'team_id' => $team->id,
+            'user_id' => Auth::id(),
             'email' => $request->email,
             'token' => str()->random(32),
             'role' => 'member',
             'expires_at' => now()->addDays(2),
         ]);
 
-        return redirect()->route('team.show', $team->slug);
+        return redirect()->back()->with('success', 'Invitation has been sent successfully!');
     }
 
     /**

@@ -17,6 +17,7 @@ class Invitation extends Model
      */
     protected $fillable = [
         'team_id',
+        'user_id',
         'email',
         'token',
         'role',
