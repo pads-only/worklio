@@ -1,53 +1,12 @@
 <x-app-layout>
     {{-- EDIT TEAM MODAL --}}
-    @include('team.partials.edit-modal')
+    @include('team.partials.update-modal')
 
     {{-- DELETE TEAM MODAL --}}
     @include('team.partials.delete-modal')
 
     {{-- LEAVE TEAM MODAL --}}
-    <x-modal name="confirm-leave-team" :show="$errors->deleteTeam->isNotEmpty()" focusable>
-        <form method="POST" action="{{ route('team.destroy', $team->slug) }}" class="p-6">
-            @csrf
-            @method('DELETE')
-
-            <div class="mb-5">
-                <h2 class="text-xl font-semibold ">
-                    Leave Team
-                </h2>
-
-                <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    Are you sure you want to leave this team?
-                </p>
-            </div>
-
-            <div>
-                <x-input-label for="delete_name" value="Confirm Team Name" required />
-
-                <x-text-input
-                    id="delete_name"
-                    name="name"
-                    type="text"
-                    :value="old('name')"
-                    required
-                    class="mt-2 block w-full border-border bg-background"
-                    placeholder="Enter team name"
-                />
-
-                <x-input-error :messages="$errors->deleteTeam->get('name')" class="mt-2" />
-            </div>
-
-            <div class="mt-8 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    Cancel
-                </x-secondary-button>
-
-                <x-danger-button>
-                    Delete Team
-                </x-danger-button>
-            </div>
-        </form>
-    </x-modal>
+    @include('team.partials.leave-team-modal')
 
     <div class="min-h-screen bg-background">
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -457,8 +416,8 @@
 
                             <x-danger-button
                                 class="w-full bg-transparent text-red-500 border border-red-500 hover:text-muted"
-                                {{-- x-data="" --}}
-                                {{-- x-on:click="$dispatch('open-modal', 'confirm-leave-team')" --}}
+                                x-data=""
+                                x-on:click="$dispatch('open-modal', 'confirm-leave-team')"
                             >
                                 Leave Workspace
                                 <span>→</span>

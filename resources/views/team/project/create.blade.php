@@ -16,7 +16,7 @@
             {{-- FORM CONTAINER --}}
             <div class="rounded-xl border border-border bg-surface p-6 shadow-soft">
 
-                <form method="POST" action="{{ route('project.store', $team->slug) }}">
+                <form method="POST" action="{{ route('project.store', $team->slug) }}" x-data="{submitting : false}" @submit.prevent='submitting = true; $el.submit()'>
                     @csrf
 
                     {{-- PROJECT NAME --}}
@@ -58,8 +58,9 @@
                             Cancel
                         </x-link>
 
-                        <x-primary-button>
-                            Create Project
+                        <x-primary-button x-bind:disabled="submitting" class="disabled:opacity-20 disabled:cursor-not-allowed">
+                            <span x-show="!submitting">Create</span>
+                            <span x-show="submitting">Creating...</span>
                         </x-primary-button>
 
                     </div>

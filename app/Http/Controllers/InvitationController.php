@@ -82,6 +82,11 @@ class InvitationController extends Controller
         //
     }
 
+    public function acceptSuccess(Team $team)
+    {
+        return view('invitation.accept-success', compact('team'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -96,7 +101,7 @@ class InvitationController extends Controller
 
         $invitation->delete();
 
-        return redirect()->route('team.show', $team->slug);
+        return redirect()->route('team.invite.accept-success', $team->slug);
     }
 
     /**

@@ -1,22 +1,22 @@
 <section class="space-y-6">
-    <x-modal name="confirm-delete-team" :show="$errors->deleteTeam->isNotEmpty()" focusable>
+    <x-modal name="confirm-leave-team" :show="$errors->deleteTeam->isNotEmpty()" focusable>
         <form method="POST" action="{{ route('team.destroy', $team->slug) }}" class="p-6" x-data="{ submitting: false }" @submit.prevent="submitting = true; $el.submit()">
             @csrf
             @method('DELETE')
-    
+
             <div class="mb-5">
                 <h2 class="text-xl font-semibold ">
-                    Delete Team
+                    Leave Team
                 </h2>
-    
+
                 <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    This action cannot be undone. All projects, tasks, and workspace data associated with this team will be permanently deleted. Type <span class="text-foreground font-semibold">"{{$team->name}}"</span> to confirm deletion.
+                    Are you sure you want to leave this team?
                 </p>
             </div>
-    
+
             <div>
                 <x-input-label for="delete_name" value="Confirm Team Name" class="sr-only" required />
-    
+
                 <x-text-input
                     id="delete_name"
                     name="name"
@@ -26,18 +26,18 @@
                     class="mt-2 block w-full border-border bg-background"
                     placeholder="Enter team name"
                 />
-    
+
                 <x-input-error :messages="$errors->deleteTeam->get('name')" class="mt-2" />
             </div>
-    
+
             <div class="mt-8 flex justify-end gap-3">
                 <x-secondary-button x-on:click="$dispatch('close')">
                     Cancel
                 </x-secondary-button>
-    
+
                 <x-danger-button x-bind:disabled="submitting" class="disabled:opacity-20 disabled:cursor-not-allowed">
-                    <span x-show="!submitting">Delete</span>
-                    <span x-show="submitting">Deleting...</span>
+                    <span x-show="!submitting">Leave</span>
+                    <span x-show="submitting">Leaving...</span>
                 </x-danger-button>
             </div>
         </form>
