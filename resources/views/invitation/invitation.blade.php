@@ -48,10 +48,11 @@
                             {{-- RIGHT ACTIONS --}}
                             <div class="flex items-center gap-2">
 
-                                <form action="{{ route('team.invite.accept', [$invitation->team->slug, $invitation->token]) }}" method="POST">
+                                <form action="{{ route('team.invite.accept', [$invitation->team->slug, $invitation->token]) }}" method="POST" x-data="{ submitting: false }" @submit.prevent="submitting = true; $el.submit()">
                                     @csrf
-                                    <x-primary-button>
-                                        Accept
+                                    <x-primary-button x-bind:disabled="submitting" class="disabled:opacity-20 disabled:cursor-not-allowed">
+                                        <span x-show="!submitting">Accept</span>
+                                        <span x-show="submitting">Processing...</span>
                                     </x-primary-button>
                                 </form>
 

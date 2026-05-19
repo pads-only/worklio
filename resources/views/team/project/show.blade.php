@@ -1,7 +1,7 @@
 <x-app-layout>
 
     {{-- EDIT PROJECT MODAL --}}
-    @include('team.project.partials.edit-modal')
+    @include('team.project.partials.update-modal')
 
     {{-- DELETE PROJECT MODAL --}}
     @include('team.project.partials.delete-modal')

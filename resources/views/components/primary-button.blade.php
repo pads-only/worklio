@@ -1,3 +1,5 @@
+@props([''])
+
 <button {{ $attributes->merge([
     'type' => 'submit',
     'class' => '
@@ -14,6 +16,7 @@
         focus:ring-primary-500
         focus:ring-offset-2
         transition ease-in-out duration-150
+
     '
 ]) }}>
     {{ $slot }}

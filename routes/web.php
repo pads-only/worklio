@@ -31,6 +31,7 @@ Route::middleware('auth')->prefix('app')->group(function () {
 
     // invitation routes inside team routes
     Route::get('teams/{team:slug}/my-invites', [InvitationController::class, 'index'])->name('team.invite.index');
+    Route::get('teams/{team:slug}/invites', [InvitationController::class, 'acceptSuccess'])->name('team.invite.accept-success');
     Route::get('/teams/{team:slug}/invite', [InvitationController::class, 'create'])->name('team.invite.create');
     Route::post('/teams/{team:slug}/invite', [InvitationController::class, 'store'])->name('team.invite.store');
     Route::post('/teams/{team:slug}/{invitation:token}/accept', [InvitationController::class, 'accept'])->name('team.invite.accept');

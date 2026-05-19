@@ -13,7 +13,7 @@
                         </div>
 
                         <h1 class="mt-4 text-3xl font-bold tracking-tight text-foreground">
-                            Pending Invitations
+                            Pending Invitations for {{$team->name}}
                         </h1>
 
                         <p class="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">

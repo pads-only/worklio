@@ -16,7 +16,7 @@
             {{-- FORM CONTAINER --}}
             <div class="rounded-xl border border-border bg-surface p-6 shadow-soft">
 
-                <form action="{{ route('team.invite.store', $team->slug) }}" method="POST">
+                <form action="{{ route('team.invite.store', $team->slug) }}" method="POST" x-data="{ submitting: false }" @submit.prevent="submitting = true; $el.submit()">
                     @csrf
 
                     {{-- EMAIL --}}
@@ -43,8 +43,9 @@
                             Cancel
                         </x-link>
 
-                        <x-primary-button>
-                            Send Invitation
+                        <x-primary-button x-bind:disabled="submitting" class="disabled:opacity-20 disabled:cursor-not-allowed">
+                            <span x-show="!submitting">Send</span>
+                            <span x-show="submitting">Sending...</span>
                         </x-primary-button>
 
                     </div>
